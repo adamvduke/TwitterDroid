@@ -1,10 +1,8 @@
 package com.apprenaissance.adapters;
 
-import java.net.URI;
 import java.util.List;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +18,11 @@ public class TweetsAdapter extends BaseAdapter {
 
 	private List<Tweet> tweets;
 	private LayoutInflater layoutInflater;
+	private Context context;
 
 	public TweetsAdapter(Context context, List<Tweet> tweets) {
 		this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.context = context;
 		this.tweets = tweets;
 	}
 
@@ -48,6 +48,7 @@ public class TweetsAdapter extends BaseAdapter {
         textView.setText(tweet.getBody());
         
         ImageView imageView = (ImageView) convertView.findViewById(R.id.timeline_item_image_view);
+        imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar));
         imageView.setTag(tweet.getImageUrl());
         new DownloadAvatarImageTask().execute(imageView);
         return convertView;

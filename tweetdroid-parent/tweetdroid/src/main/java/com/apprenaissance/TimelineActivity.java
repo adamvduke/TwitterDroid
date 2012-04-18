@@ -1,13 +1,9 @@
 package com.apprenaissance;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.ListActivity;
 import android.os.Bundle;
 
-import com.apprenaissance.adapters.TweetsAdapter;
-import com.apprenaissance.models.Tweet;
+import com.apprenaissance.tasks.DownloadTimelineTask;
 
 public class TimelineActivity extends ListActivity {
 
@@ -20,12 +16,7 @@ public class TimelineActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-       List<Tweet> tweets = new ArrayList<Tweet>();
-       tweets.add(new Tweet("Poopin", "http://a0.twimg.com/profile_images/1252900035/Photo_on_2011-02-21_at_18.39__2.jpg"));
-       tweets.add(new Tweet("Poopin more...", "http://a0.twimg.com/profile_images/1252900035/Photo_on_2011-02-21_at_18.39__2.jpg"));
-       
-       setListAdapter(new TweetsAdapter(this, tweets));
+       new DownloadTimelineTask<TimelineActivity>(this).execute("https://api.twitter.com/1/statuses/public_timeline.json?include_entities=true");
     }
 }
 
