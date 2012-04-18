@@ -1,11 +1,8 @@
 package com.apprenaissance.tasks;
 
 import java.io.BufferedInputStream;
-import java.io.InputStream;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,20 +19,20 @@ public class DownloadAvatarImageTask extends AsyncTask<ImageView, Void, Bitmap> 
 		return downloadImage((String)imageView.getTag());
 	}
 
-	private Bitmap downloadImage(String url) {
-		HttpGet request = new HttpGet(url);
-		DefaultHttpClient client = new DefaultHttpClient();
+	private Bitmap downloadImage(String urlString) {
+		HttpURLConnection connection = null;
 		try {
-			HttpResponse response = client.execute(request);
-			InputStream responseBodyStream = response.getEntity().getContent();
-			BufferedInputStream bufferedResponseBodyStream = new BufferedInputStream(responseBodyStream);
+			URL url = new URL(urlString);
+			connection = (HttpURLConnection) url.openConnection();
+			BufferedInputStream bufferedResponseBodyStream = new BufferedInputStream(connection.getInputStream());
 			Bitmap map = BitmapFactory.decodeStream(bufferedResponseBodyStream);
 			bufferedResponseBodyStream.close();
-			responseBodyStream.close();
 			return map;	
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception.getMessage());
+		} finally {
+			if(null != connection) connection.disconnect();
 		}
 	}
 
