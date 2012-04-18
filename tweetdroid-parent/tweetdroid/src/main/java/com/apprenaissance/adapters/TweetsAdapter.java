@@ -1,16 +1,20 @@
 package com.apprenaissance.adapters;
 
+import java.net.URI;
 import java.util.List;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apprenaissance.R;
 import com.apprenaissance.models.Tweet;
+import com.apprenaissance.tasks.DownloadAvatarImageTask;
 
 public class TweetsAdapter extends BaseAdapter {
 
@@ -39,7 +43,13 @@ public class TweetsAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.timeline_item, null);
         } 
         Tweet tweet = tweets.get(position);
-        ((TextView) convertView).setText(tweet.getBody());
+        
+        TextView textView = (TextView) convertView.findViewById(R.id.timeline_item_text_view); 
+        textView.setText(tweet.getBody());
+        
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.timeline_item_image_view);
+        imageView.setTag(tweet.getImageUrl());
+        new DownloadAvatarImageTask().execute(imageView);
         return convertView;
 	}
 }
