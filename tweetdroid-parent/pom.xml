@@ -16,7 +16,6 @@
 
     <properties>
         <platform.version>2.3.3</platform.version>
-        <android.sdk.path>/Users/odin/android-sdks</android.sdk.path>
     </properties>
 
     <dependencyManagement>
